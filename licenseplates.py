@@ -11,16 +11,17 @@ results = {}
 mot_tracker = Sort()
 
 # Load models
-license_plate_detector = YOLO(
-    'trainyololicense/train/runs/detect/train15/weights/best.pt')
+license_plate_detector = YOLO('model/best.pt')
 
 # Load video
-camera = cv2.VideoCapture(0)
-# cap = cv2.VideoCapture('./teste.mp4')
-#
-# start_time = 254
-# start_time_ms = start_time * 1000
-# cap.set(cv2.CAP_PROP_POS_MSEC, start_time_ms)
+# camera = cv2.VideoCapture(0)
+# url = './videos/teste.mp4'
+url = 'http://192.168.1.9:8080/video'
+cap = cv2.VideoCapture(url)
+
+start_time = 254
+start_time_ms = start_time * 1000
+cap.set(cv2.CAP_PROP_POS_MSEC, start_time_ms)
 # Get screen size and calculate 30% dimensions
 monitor = get_monitors()[0]  # Assumes primary monitor
 screen_width = monitor.width
@@ -43,7 +44,7 @@ ret = True
 validcounter = 0
 while ret:
     frame_nmr += 1
-    ret, frame = camera.read()
+    ret, frame = cap.read()
 
     if ret:
         # Initialize for every frame to process the entire video
@@ -93,6 +94,9 @@ while ret:
         license_plate_text, license_plate_text_score = read_license_plate(
             license_plate_crop_thresh)
 
+        cv2.imshow('Vehicle and License Plate Detection', frame)
+        cv2.waitKey(1)
+
         # Calculate text size for centering
         text_size = cv2.getTextSize(
             license_plate_text, cv2.FONT_HERSHEY_SIMPLEX, 0.5, 2)[0]
@@ -106,8 +110,6 @@ while ret:
         validplates = ['08-D-27995', '181-D-49808',
                        '192-D-4208', '142-D-24686', '202-D-20242']
 
-        cv2.imshow('Vehicle and License Plate Detection', frame)
-        cv2.waitKey(1)
 
         if license_plate_text in validplates:
             validcounter += 1
@@ -133,7 +135,7 @@ while ret:
         cv2.waitKey(1)
 
 # Release video capture and close windows
-camera.release()
+cap.release()
 cv2.destroyAllWindows()
 
 # Write results
