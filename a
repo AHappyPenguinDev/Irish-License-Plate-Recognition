@@ -1,0 +1,165 @@
+
+A B C D E F G H I J K L M N O P Q R S T U V W X Y Z 
+
+
+
+C ↔ G: C is an open curve, while G has a small hook/loop at the bottom. In some fonts, the curves blend, especially if the G's hook is subtle.
+D ↔ O: D has a straight vertical left side with a curve, O is fully round. This is a classic OCR error (as you mentioned), particularly in bold or distorted plates.
+Q ↔ O: Q is similar to O but with a tail/loop at the bottom. The main body can confuse systems if the tail is cropped or faint.
+Straight/Vertical Similarities
+E ↔ F: Both have vertical lines with horizontals, but E has three bars (top, middle, bottom), F has two (top and middle). Thin fonts make the middle bar hard to distinguish.
+P ↔ R: P has a straight top and a loop, R adds a diagonal leg. The upper curves are very similar, leading to swaps.
+U ↔ V: U is rounded at the bottom, V is pointed. In some views or low-res images, they look almost identical.
+Angular/Diagonal Similarities
+K ↔ X: Both have crossed diagonals, but K has a vertical stem on the left, X is symmetric. Angular fonts can make them interchangeable.
+M ↔ N: M has an extra peak in the middle, N is simpler. In wide fonts, the shapes overlap, especially if the middle peak is shallow.
+W ↔ M: W is like two V's, M is like two N's. The peaks can blur together in OCR.
+Y ↔ V: Y has a tail below the V-shape, V is symmetric. If the tail is short or cut off, they confuse.
+
+
+Se tem só uma letra só pode ser um desses caracteres:
+C
+D
+G
+L
+W
+Z
+
+Mapear letra detectada para caractere possivel que mais parece:
+'A' : 'L'
+'B' : 'G'
+'E' : 'L '
+'F' : 'L'
+'H' : 'W'
+'I' : 'L'
+'J' : 'Z'
+'K' : 'W'
+'M' : 'W'
+'N' : 'W'
+'O' : 'D'
+'P' : 'D'
+'Q' : 'G'
+'R' : 'D'
+'S' : 'C'
+'T' : 'L'
+'U' : 'C'
+'V' : 'W'
+'X' : 'W'
+'Y' : 'W'
+
+
+------------------------------------------- 
+
+Regiões com 2 letras só podem começar com essas letras:
+['B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'K', 'L', 'M', 'N', 'O', 'P', 'R', 'S', 'T', 'W', 'Y', 'Z']
+
+
+Mapear letra detectada para caractere possivel que mais parece:
+
+A: K
+B: B
+C: C
+D: D
+E: F
+F: F
+G: G
+H: I
+I: I
+J: I
+K: K
+L: L
+M: W
+N: N
+O: C
+P: D
+Q: G
+R: P
+S: C
+T: I
+U: C
+V: W
+W: W
+X: K
+Y: W
+Z: Z
+
+Usando a primeira letra eu consigo saber quais são as proximas letras possiveis, 
+já que as combinações de regiões são limitadas
+
+Mapear as primeiras letras possiveis para as suas segundas letras possiveis:
+
+'C' : ['N','W','I']
+'D' : ['L','I']
+'F' : ['I']
+'G' : ['I']
+'I' : ['C','D','E','F','H','K','M','N','O','P','R','S','T','U','V','X','Y','Z']
+'K' : ['E','K','Y','I']
+'L' : ['D','H','K','M','S','I']
+'N' : ['I']
+'P' : ['I']
+'W' : ['D','H','W','X','I']
+'Z' : ['A','B','C','D','E','F','G','H','J','K','L','M','N','O','P','R','S','T','U','V','W','X','Y','Z']
+
+Mas tem várias combinações possiveis,
+como saber qual a segunda letra vai ser?
+
+Eu sei qual a letra detectada foi, então eu posso mapear ela à letra que mais parece denovo
+
+Mas, ainda temos várias letras podem ser, então fazer uma lista para cada letra do alfabeto
+com as letras que mais parecem com ela na ordem que elas mais parecem excluindo o Q, pois esse não aparece
+em região alguma
+
+isso tudo só deve ser feito se a primeira e segunda letra não são uma das opções de regiões exatamente
+
+
+2 Letters:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+def format_license(text):
+    """
+    Format the license plate text by converting characters using the mapping dictionaries.
+    Args:
+        text (str): License plate text.
+
+    Returns:
+        str: Formatted license plate text.
+    """
+    
+    #
+    for j in range(len(text)):
+        print("Value of J: ", j)
+        if text[j] in mapping[j].keys():
+            license_plate_ += mapping[j][text[j]]
+        else:
+            license_plate_ += text[j]
+
+    return license_plate_
+
+
