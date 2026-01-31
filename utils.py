@@ -304,12 +304,24 @@ def format_license(text):
 def read_license_plate(license_plate_crop):
     detections = reader.readtext(license_plate_crop)
 
+    # Store all valid detections in list to use the best one
+    valid_detections = []
+
+    # Find the detection with the highest score
+
     for detection in detections:
         bbox, text, score = detection
-
         text = text.upper().replace(' ', '')
 
         if license_complies_format(text):
-            return format_license(text), score
+            valid_detections.append((bbox, format_license(text), score))
 
+    if valid_detections:
+        best_detection = max(valid_detections, key=lambda x: x[2])
+        bbox, text, score = best_detection
+        print("Best detection: ", text, "has a score of: ", score)
+        print("Valid detections: ", valid_detections)
+        return text, score
+
+    print("No valid detections, try again")
     return None, None
