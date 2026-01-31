@@ -19,9 +19,10 @@ license_plate_detector = YOLO('model/best.pt')
 url = 'http://192.168.1.9:8080/video'
 cap = cv2.VideoCapture(url)
 
-start_time = 254
-start_time_ms = start_time * 1000
-cap.set(cv2.CAP_PROP_POS_MSEC, start_time_ms)
+#start_time = 254
+#start_time_ms = start_time * 1000
+#cap.set(cv2.CAP_PROP_POS_MSEC, start_time_ms)
+
 # Get screen size and calculate 30% dimensions
 monitor = get_monitors()[0]  # Assumes primary monitor
 screen_width = monitor.width
