@@ -23,12 +23,27 @@ dict_underscore_to_score = {
 # -- Region sections
 
 # All regions for the region section of the plate
-regions = ['CN', 'C', 'DL', 'KE', 'KK', 'KY', 'LD', 'LH', 'LK', 'LM', 'LS', 'MH', 'MN', 'MO', 'OY', 'RN', 'SO', 'TN', 'TS', 'WD', 'WH', 'WW', 'WX', 'ZV', 'ZZ', 'BI', 'CI', 'DI', 'EI', 'FI', 'GI', 'HI', 'IC', 'ID', 'IE', 'IF', 'IH', 'IK', 'IM', 'IN', 'IO', 'IP', 'IR', 'IS', 'IT', 'IU', 'IV', 'IX', 'IY', 'IZ', 'KI', 'LI', 'MI', 'NI', 'PI', 'RI', 'SI', 'TI', 'WI', 'YI', 'ZA', 'ZB', 'ZC', 'ZD', 'ZE', 'ZF', 'ZC', 'ZG', 'ZH', 'ZJ', 'ZK', 'ZL', 'ZM', 'ZN', 'ZO', 'ZP', 'ZR', 'ZS', 'ZT', 'ZU', 'ZV', 'ZW', 'ZX', 'ZY', 'ZZ', 'C', 'CE',
-           'CN', 'CW', 'D', 'DL', 'G', 'KE', 'KK', 'KY', 'L', 'LD', 'LH', 'LK', 'LM', 'LS', 'MH', 'MN', 'MO', 'OY', 'RN', 'SO', 'TN', 'TS', 'W', 'WD', 'WH', 'WW', 'WX', 'Z', 'ZV', 'ZZ', 'CI', 'DI', 'EI', 'FI', 'GI', 'HI', 'IC', 'ID', 'IE', 'IF', 'IH', 'IK', 'IM', 'IN', 'IO', 'IP', 'IR', 'IS', 'IT', 'IU', 'IV', 'IX', 'IY', 'IZ', 'KI', 'LI', 'MI', 'NI', 'PI', 'RI', 'SI', 'TI', 'WI', 'YI', 'Z', 'ZA', 'ZB', 'ZC', 'ZD', 'ZE', 'ZF', 'ZC', 'ZG', 'ZH', 'ZJ', 'ZK', 'ZL', 'ZM', 'ZN', 'ZO', 'ZP', 'ZR', 'ZS', 'ZT', 'ZU', 'ZV', 'ZW', 'ZX', 'ZY', 'ZZ']
+regions = ['CN', 'C', 'DL', 'KE', 'KK', 'KY', 'LD', 'LH', 'LK', 'LM', 'LS', 'MH', 'MN', 'MO', 'OY', 'RN', 'SO', 'TN', 'TS', 'WD', 'WH', 'WW', 'WX', 'ZV', 'ZZ', 'BI', 'CI', 'DI', 'EI', 'FI', 'GI', 'HI', 'IC', 'ID', 'IE', 'IF', 'IH', 'IK', 'IM', 'IN', 'IO', 'IP', 'IR', 'IS', 'IT', 'IU', 'IV', 'IX', 'IY', 'IZ', 'KI', 'LI', 'MI', 'NI', 'PI', 'RI', 'SI', 'TI', 'WI', 'YI', 'ZA', 'ZB', 'ZC', 'ZD', 'ZE', 'ZF', 'ZC', 'ZG', 'ZH', 'ZJ', 'ZK', 'ZL', 'ZM', 'ZN', 'ZO', 'ZP', 'ZR', 'ZS', 'ZT', 'ZU', 'ZV', 'ZW', 'ZX', 'ZY', 'ZZ', 'C', 'CE']
 
 # Two lettered regions can only start with these letters
-two_lettered_regions_first_letters = ['B', 'C', 'D', 'E', 'F', 'G',
-                                      'H', 'I', 'K', 'L', 'M', 'N', 'O', 'P', 'R', 'S', 'T', 'W', 'Y', 'Z']
+two_lettered_regions_first_letters = ['C', 'D', 'F', 'G',
+                                      'I', 'K', 'L', 'N', 'P', 'W', 'Z']
+
+two_lettered_regions_first_letters_lookalikes = {'A': 'N',
+                                                 'B': 'P',
+                                                 'E': 'F',
+                                                 'H': 'N',
+                                                 'J': 'I',
+                                                 'M': 'N',
+                                                 'O': 'C',
+                                                 'Q': 'G',
+                                                 'R': 'P',
+                                                 'S': 'Z',
+                                                 'T': 'I',
+                                                 'U': 'C',
+                                                 'V': 'W',
+                                                 'X': 'K',
+                                                 'Y': 'I'}
 
 # Possible second letters for regions with two letters
 # For example, if a region starts with C it can only end with N,W or I
@@ -78,6 +93,9 @@ dict_letter_to_one_letter_region = {
 # like serif styles, curves vs. straight lines, and historical OCR error data.
 # Similarity decreases as you go down the list. Lowercase could be added similarly if needed.
 
+# Note: Most regions are not the same letter twice ('KK' for example), but those that are
+# can be most similar to themselves, as seen in 'K':['K', ...]
+
 ordered_letter_similarity = {
     'A': ['H', 'K', 'X', 'V', 'W', 'M', 'N', 'U', 'Y', 'Z', 'T', 'F', 'E', 'P', 'R', 'B', 'D', 'O', 'C', 'G', 'S', 'I', 'J', 'L'],
     'B': ['D', 'P', 'R', 'E', 'F', 'H', 'K', 'M', 'N', 'A', 'X', 'V', 'W', 'U', 'Y', 'Z', 'T', 'O', 'C', 'G', 'S', 'I', 'J', 'L'],
@@ -89,13 +107,13 @@ ordered_letter_similarity = {
     'H': ['A', 'K', 'X', 'N', 'M', 'V', 'W', 'U', 'Y', 'Z', 'T', 'F', 'E', 'P', 'R', 'B', 'D', 'O', 'C', 'G', 'S', 'I', 'J', 'L'],
     'I': ['J', 'L', 'T', 'F', 'E', 'H', 'K', 'X', 'V', 'W', 'M', 'N', 'U', 'Y', 'Z', 'A', 'P', 'R', 'B', 'D', 'O', 'C', 'G', 'S'],
     'J': ['I', 'L', 'T', 'F', 'E', 'H', 'K', 'X', 'V', 'W', 'M', 'N', 'U', 'Y', 'Z', 'A', 'P', 'R', 'B', 'D', 'O', 'C', 'G', 'S'],
-    'K': ['H', 'X', 'A', 'V', 'W', 'M', 'N', 'U', 'Y', 'Z', 'T', 'F', 'E', 'P', 'R', 'B', 'D', 'O', 'C', 'G', 'S', 'I', 'J', 'L'],
+    'K': ['K','H', 'X', 'A', 'V', 'W', 'M', 'N', 'U', 'Y', 'Z', 'T', 'F', 'E', 'P', 'R', 'B', 'D', 'O', 'C', 'G', 'S', 'I', 'J', 'L'],
     'L': ['I', 'J', 'T', 'F', 'E', 'H', 'K', 'X', 'V', 'W', 'M', 'N', 'U', 'Y', 'Z', 'A', 'P', 'R', 'B', 'D', 'O', 'C', 'G', 'S'],
     'M': ['N', 'W', 'V', 'U', 'Y', 'H', 'K', 'X', 'A', 'Z', 'T', 'F', 'E', 'P', 'R', 'B', 'D', 'O', 'C', 'G', 'S', 'I', 'J', 'L'],
     'N': ['M', 'H', 'K', 'X', 'V', 'W', 'U', 'Y', 'A', 'Z', 'T', 'F', 'E', 'P', 'R', 'B', 'D', 'O', 'C', 'G', 'S', 'I', 'J', 'L'],
     'O': ['C', 'G', 'D', 'B', 'P', 'R', 'E', 'U', 'S', 'I', 'J', 'L', 'A', 'H', 'K', 'X', 'V', 'W', 'M', 'N', 'Y', 'Z', 'T', 'F'],
     'P': ['R', 'B', 'D', 'F', 'E', 'O', 'C', 'G', 'H', 'K', 'X', 'V', 'W', 'M', 'N', 'U', 'Y', 'Z', 'T', 'A', 'S', 'I', 'J', 'L'],
-    'O': ['D', 'C', 'G','B', 'P', 'R', 'E', 'U', 'S', 'I', 'J', 'L', 'A', 'H', 'K', 'X', 'V', 'W', 'M', 'N', 'Y', 'Z', 'T', 'F'],
+    'O': ['D', 'C', 'G', 'B', 'P', 'R', 'E', 'U', 'S', 'I', 'J', 'L', 'A', 'H', 'K', 'X', 'V', 'W', 'M', 'N', 'Y', 'Z', 'T', 'F'],
     'R': ['P', 'B', 'D', 'F', 'E', 'O', 'C', 'G', 'H', 'K', 'X', 'V', 'W', 'M', 'N', 'U', 'Y', 'Z', 'T', 'A', 'S', 'I', 'J', 'L'],
     'S': ['Z', 'C', 'G', 'O', 'E', 'U', 'I', 'J', 'L', 'A', 'H', 'K', 'X', 'V', 'W', 'M', 'N', 'Y', 'T', 'F', 'P', 'R', 'B', 'D'],
     'T': ['I', 'J', 'L', 'F', 'E', 'H', 'K', 'X', 'V', 'W', 'M', 'N', 'U', 'Y', 'Z', 'A', 'P', 'R', 'B', 'D', 'O', 'C', 'G', 'S'],

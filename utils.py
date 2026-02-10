@@ -1,7 +1,15 @@
 import easyocr
 import re
 import string
-from dictionaries import *
+from dictionaries import dict_char_to_int
+from dictionaries import dict_int_to_char
+from dictionaries import dict_letter_to_one_letter_region
+from dictionaries import dict_underscore_to_score
+from dictionaries import regions
+from dictionaries import two_lettered_regions_first_letters
+from dictionaries import two_lettered_regions_first_letters_lookalikes
+from dictionaries import two_lettered_regions_next_possible_letters
+from dictionaries import ordered_letter_similarity
 
 # Initialize OCR reader
 reader = easyocr.Reader(['en'], gpu=True)
@@ -241,8 +249,8 @@ def format_license(text):
     for i in range(len(region)):
         if region_list[i] in dict_int_to_char:
             print("Assigning " +
-                  dict_int_to_char[region_list[i]] + " to region")
-            region_list = dict_int_to_char[region_list[i]]
+                  dict_int_to_char[region_list[i]] + " to region at index [", i, "]")
+            region_list[i] = dict_int_to_char[region_list[i]]
             print("Region inside preformatting: ", region_list[i])
 
         region = ''.join(region_list)
@@ -261,23 +269,35 @@ def format_license(text):
             region = dict_letter_to_one_letter_region.get(first_letter, region)
             print("1 char region: ", region)
 
-        # If region has 2 chars ,find the first char and choose the best lookalike to the second char from
-        # the possible choices of regions
+        # If region has 2 chars ,find the first char and choose the best lookalike
+        # to the second char from the possible choices of regions
         if len(region) == 2:
+
+            # I still need to check if region[0] is present in two_lettered_regions_first_letters
+            # If not, replace with lookalike
+            if not region[0] in two_lettered_regions_first_letters:
+                print("Region is: " + region)
+                print(region[0] + " looks like " +
+                      two_lettered_regions_first_letters_lookalikes[region[0]] + ", assigning")
+                new_region = two_lettered_regions_first_letters_lookalikes[region[0]]
+                new_region += region[1]
+                region = new_region
+                print("Region is: " + region)
+
             # All possible next letters given a starting letter
             possible_letters = two_lettered_regions_next_possible_letters[region[0]]
             second_letter = region[1]
 
-            # Dict of letters that look like each other
+            # Dict of letters that look like second_letter
             lookalikes = ordered_letter_similarity[second_letter]
 
-            min_index = float('inf')
+            smallest_index = float('inf')
             most_similar_letter = None
             for letter in possible_letters:
                 if letter in lookalikes:
                     index = lookalikes.index(letter)
-                    if index < min_index:
-                        min_index = index
+                    if index < smallest_index:
+                        smallest_index = index
                         most_similar_letter = letter
 
             if most_similar_letter:
@@ -313,6 +333,7 @@ def read_license_plate(license_plate_crop):
         bbox, text, score = detection
         text = text.upper().replace(' ', '')
 
+        print("DETECTED PLATE: ", text)
         if license_complies_format(text):
             valid_detections.append((bbox, format_license(text), score))
 

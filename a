@@ -114,34 +114,6 @@ isso tudo só deve ser feito se a primeira e segunda letra não são uma das op�
 
 2 Letters:
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 def format_license(text):
     """
     Format the license plate text by converting characters using the mapping dictionaries.
@@ -162,4 +134,22 @@ def format_license(text):
 
     return license_plate_
 
-
+L 
+LD 
+LH 
+LK 
+LM 
+LS 
+MH 
+MN 
+MO 
+OY 
+RN 
+SO 
+TN 
+TS 
+W 
+WD 
+WH 
+WX 
+WW 
