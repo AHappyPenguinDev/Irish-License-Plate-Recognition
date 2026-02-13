@@ -6,7 +6,6 @@ from ultralytics import YOLO
 import time  # Added for controlling frame rate
 
 # Dictionary containing all information
-results = {}
 
 # Object tracker
 mot_tracker = Sort()
@@ -55,9 +54,6 @@ while ret:
     ret, frame = cap.read()
 
     if ret:
-        # Initialize for every frame to process the entire video
-        results[frame_nmr] = {}
-
         # Detect license plates
         license_plates = license_plate_detector(frame, verbose=False)[0]
 
@@ -87,28 +83,14 @@ while ret:
             # cv2.waitKey(1)
 
             # Process license plate
-            license_plate_crop_thresh = cv2.cvtColor(
+            license_plate_crop_gray = cv2.cvtColor(
                 license_plate_crop, cv2.COLOR_BGR2GRAY)
 
-            # Apply bilateral filter to reduce noise while preserving edges (helps distinguish shapes)
-            # license_plate_crop_filtered = cv2.bilateralFilter(
-            #     license_plate_crop_gray, 9, 75, 75)
-
-            # Sharpen the image to enhance character edges (useful for distinguishing O from D)
-            # kernel_sharpen = np.array(
-            #     [[-1, -1, -1], [-1, 9, -1], [-1, -1, -1]])
-            # license_plate_crop_sharp = cv2.filter2D(
-            #     license_plate_crop_gray, -1, kernel_sharpen)
-            #
-            # license_plate_crop_thresh = cv2.adaptiveThreshold(
-            #     # 11 - 2 balanceado 13 - 2 bastante no começo pouco d
-            #     license_plate_crop_gray, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY_INV, 13, 1)
-
-            cv2.imshow('final', license_plate_crop_thresh)
+            cv2.imshow('final', license_plate_crop_gray)
             cv2.waitKey(1)
             # Read license plate number
             license_plate_text, license_plate_text_score = read_license_plate(
-                license_plate_crop_thresh)
+                license_plate_crop_gray)
 
             # Calculate text size for centering
             text_size = cv2.getTextSize(
@@ -143,7 +125,7 @@ while ret:
             if license_plate_text:
                 print('Detected plate: ', license_plate_text)
 
-        # Display the frame with bounding boxes (moved outside if detections to show regardless)
+        # Display the frame with bounding boxes
         cv2.imshow('Vehicle and License Plate Detection', frame)
         cv2.waitKey(1)
 
@@ -153,6 +135,3 @@ while ret:
 # Release video capture and close windows
 cap.release()
 cv2.destroyAllWindows()
-
-# Write results
-# write_csv(results, "./test.csv")
